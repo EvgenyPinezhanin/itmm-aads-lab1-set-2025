@@ -125,5 +125,6 @@ istream &operator>>(istream &istr, TSet &s) // ввод
 
 ostream& operator<<(ostream &ostr, const TSet &s) // вывод
 {
+    // {x,x,x,x,x,...}
     return ostr;
 }
