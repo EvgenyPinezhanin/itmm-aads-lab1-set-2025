@@ -202,7 +202,7 @@ istream &operator>>(istream &istr, TBitField &bf) // ввод
 			int pos = bitLen - 1 - i;
 			bf.SetBit(pos);
 		}
-	}
+	}	
 
 	return istr;
 }
