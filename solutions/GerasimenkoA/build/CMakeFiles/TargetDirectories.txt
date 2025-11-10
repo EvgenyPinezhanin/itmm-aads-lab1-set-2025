@@ -1,0 +1,5 @@
+D:/1labb/itmm-aads-lab1-set-2025/solutions/GerasimenkoA/build/CMakeFiles/ALL_BUILD.dir
+D:/1labb/itmm-aads-lab1-set-2025/solutions/GerasimenkoA/build/CMakeFiles/ZERO_CHECK.dir
+D:/1labb/itmm-aads-lab1-set-2025/solutions/GerasimenkoA/build/src/CMakeFiles/set.dir
+D:/1labb/itmm-aads-lab1-set-2025/solutions/GerasimenkoA/build/gtest/CMakeFiles/gtest.dir
+D:/1labb/itmm-aads-lab1-set-2025/solutions/GerasimenkoA/build/test/CMakeFiles/test_set.dir

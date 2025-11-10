@@ -127,7 +127,7 @@ ostream& operator<<(ostream &ostr, const TSet &s) // вывод
 {
     // {x,x,x,x,x,...}
 
-    ostr << "{"
+    ostr << "{";
     bool first = true;
     for (int i = 0; i < s.MaxPower; i++) {
         if (s.BitField.GetBit(i)) {

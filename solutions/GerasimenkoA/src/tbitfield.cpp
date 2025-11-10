@@ -7,6 +7,7 @@
 
 #include "tbitfield.h"
 #include "string.h"
+#include "stdexcept"
 
 // Fake variables used as placeholders in tests
 static const int FAKE_INT = -1;
@@ -16,21 +17,24 @@ static const int cBITS = sizeof(TELEM) * 8;
 
 TBitField::TBitField(int len)
 {
-	size = len / (sizeof(TELEM) * 8) + 1;
-	Mem = new TELEM[size];
-	for (int i = 0; i < size; i++) {
-		Mem[i] = 0;
+	if (len < 0)
+		throw std::invalid_argument("Negative length");
+	BitLen = len;
+	MemLen = (BitLen + cBITS - 1) / cBITS;
+	pMem = new TELEM[MemLen];
+	for (int i = 0; i < MemLen; i++) {
+		pMem[i] = 0;
 	}
 }
 
 TBitField::TBitField(const TBitField &bf) // конструктор копирования
 {
-	size = bf.size;
-	pMem = new TELEM[size];
-	for (int i = 0; i < size; i++) {
+	BitLen = bf.BitLen;
+	MemLen = bf.MemLen;
+	pMem = new TELEM[MemLen];
+	for (int i = 0; i < MemLen; i++) {
 		pMem[i] = bf.pMem[i];
 	}
-	return *this;	
 }
 
 TBitField::~TBitField()
@@ -46,7 +50,7 @@ int TBitField::GetMemIndex(const int n) const // индекс Мем для би
 TELEM TBitField::GetMemMask(const int n) const // битовая маска для бита n
 {
 	TELEM mask = 1;
-	mask <<= n % cBITS;
+	mask <<= (n % cBITS);
     return mask;
 }
 
@@ -59,7 +63,7 @@ int TBitField::GetLength(void) const // получить длину (к-во б�
 
 void TBitField::SetBit(const int n) // установить бит
 {
-	if (n < 0 || n >= bitLen)
+	if (n < 0 || n >= BitLen)
 		throw std::out_of_range("Bit position out of range");
 
 	int index = GetMemIndex(n);
@@ -70,7 +74,7 @@ void TBitField::SetBit(const int n) // установить бит
 
 void TBitField::ClrBit(const int n) // очистить бит
 {
-	if (n < 0 || n >= bitLen)
+	if (n < 0 || n >= BitLen)
 		throw std::out_of_range("Bit position out of range");
 
 	int index = GetMemIndex(n);
@@ -81,13 +85,13 @@ void TBitField::ClrBit(const int n) // очистить бит
 
 int TBitField::GetBit(const int n) const // получить значение бита
 {
-	if (n < 0 || n >= bitLen)
+	if (n < 0 || n >= BitLen)
 		throw std::out_of_range("Bit position out of range");
 
 	int index = GetMemIndex(n);
 	TELEM mask = GetMemMask(n);
 
-	pMem[index] &= mask;
+	return (pMem[index] & mask) ? 1 : 0;
 }
 
 // битовые операции
@@ -97,26 +101,26 @@ TBitField& TBitField::operator=(const TBitField &bf) // присваивание
 	if (this == &bf)
 		return *this;
 
-	if (memLen != bf.memLen) {
+	if (MemLen != bf.MemLen) {
 		delete[] pMem;
-		memLen = bf.memLen;
-		pMem = new TELEM[memLen];
+		MemLen = bf.MemLen;
+		pMem = new TELEM[MemLen];
 	}
 
-	bitLen = bf.bitLen;
-	for (int i = 0; i < memLen; i++) {
+	BitLen = bf.BitLen;
+	for (int i = 0; i < MemLen; i++) {
 		pMem[i] = bf.pMem[i];
 	}
 
 	return *this;
 }
 
-int TBitField::operator==(const TBitField &bf) const // сравнение
+int TBitField::operator==(const TBitField& bf) const // сравнение
 {
-	if (bitLen != bf.bitLen)
+	if (BitLen != bf.BitLen)
 		return 0;
 
-	for (int i = 0; i < memLen; i++) {
+	for (int i = 0; i < MemLen; i++) {
 		if (pMem[i] != bf.pMem[i])
 			return 0;
 	}
@@ -124,20 +128,23 @@ int TBitField::operator==(const TBitField &bf) const // сравнение
 	return 1;
 }
 
-int TBitField::operator!=(const TBitField &bf) const // сравнение
+int TBitField::operator!=(const TBitField& bf) const // сравнение
 {
 	return !(*this == bf);
 }
 
 TBitField TBitField::operator|(const TBitField &bf) // операция "или"
 {
-	if (bitLen != bf.bitLen)
-		throw std::invalid_argument("Error: The bit length must match.");
+	int resultLen = (BitLen > bf.BitLen) ? BitLen : bf.BitLen;
+	int resultMemLen = (resultLen + cBITS - 1) / cBITS;
+	if (resultMemLen == 0) resultMemLen = 1;
 
-	TBitField result(bitLen);
+	TBitField result(resultLen);
 
-	for (int i = 0; i < memLen; i++) {
-		result.pMem[i] = pMem[i] | bf.pMem[i];
+	for (int i = 0; i < resultMemLen; i++) {
+		TELEM a = (i < MemLen) ? pMem[i] : 0;
+		TELEM b = (i < bf.MemLen) ? bf.pMem[i] : 0;
+		result.pMem[i] = a | b;
 	}
 
 	return result;
@@ -145,13 +152,16 @@ TBitField TBitField::operator|(const TBitField &bf) // операция "или"
 
 TBitField TBitField::operator&(const TBitField &bf) // операция "и"
 {
-	if (bitLen != bf.bitLen)
-		throw std::invalid_argument("Error: The bit length must match.");
+	int resultLen = (BitLen > bf.BitLen) ? BitLen : bf.BitLen;
+	int resultMemLen = (resultLen + cBITS - 1) / cBITS;
+	if (resultMemLen == 0) resultMemLen = 1;
 
-	TBitField result(bitLen);
+	TBitField result(resultLen);
 
-	for (int i = 0; i < memLen; i++) {
-		result.pMem[i] = pMem[i] & bf.pMem[i];
+	for (int i = 0; i < resultMemLen; i++) {
+		TELEM a = (i < MemLen) ? pMem[i] : 0;
+		TELEM b = (i < bf.MemLen) ? bf.pMem[i] : 0;
+		result.pMem[i] = a & b;
 	}
 
 	return result;
@@ -159,17 +169,17 @@ TBitField TBitField::operator&(const TBitField &bf) // операция "и"
 
 TBitField TBitField::operator~(void) // отрицание
 {
-	TBitField result(bitLen);
+	TBitField result(BitLen);
 
-	for (int i = 0; i < memLen; i++) {
+	for (int i = 0; i < MemLen; i++) {
 		result.pMem[i] = ~pMem[i];
 	}
 
-	int extraBits = (memLen * (sizeof(TELEM) * 8)) - bitLen;
+	int extraBits = (MemLen * (sizeof(TELEM) * 8)) - BitLen;
 	if (extraBits > 0) {
 		TELEM mask = (TELEM)(-1);
 		mask >>= extraBits;      
-		result.pMem[memLen - 1] &= mask;
+		result.pMem[MemLen - 1] &= mask;
 	}
 
 	return result;
@@ -195,11 +205,11 @@ istream &operator>>(istream &istr, TBitField &bf) // ввод
 	}
 
 	int strLen = input.length();
-	int bitLen = bf.GetLength();
+	int BitLen = bf.GetLength();
 
-	for (int i = 0; i < strLen && i < bitLen; i++) {
+	for (int i = 0; i < strLen && i < BitLen; i++) {
 		if (input[i] == '1') {
-			int pos = bitLen - 1 - i;
+			int pos = BitLen - 1 - i;
 			bf.SetBit(pos);
 		}
 	}	
