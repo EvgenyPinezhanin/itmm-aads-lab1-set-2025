@@ -8,6 +8,9 @@
 #include "tbitfield.h"
 #include "string.h"
 #include "stdexcept"
+#include "algorithm"
+
+using namespace std;
 
 // Fake variables used as placeholders in tests
 static const int FAKE_INT = -1;
@@ -39,7 +42,9 @@ TBitField::TBitField(const TBitField &bf) // конструктор копиро
 
 TBitField::~TBitField()
 {
-	delete[]pMem;
+	if (pMem != nullptr) 
+		delete[]pMem;
+	pMem = nullptr;
 }
 
 int TBitField::GetMemIndex(const int n) const // индекс Мем для бита n
@@ -141,12 +146,21 @@ TBitField TBitField::operator|(const TBitField &bf) // операция "или"
 
 	TBitField result(resultLen);
 
-	for (int i = 0; i < resultMemLen; i++) {
-		TELEM a = (i < MemLen) ? pMem[i] : 0;
-		TELEM b = (i < bf.MemLen) ? bf.pMem[i] : 0;
-		result.pMem[i] = a | b;
+	int minMemLen = min(MemLen, bf.MemLen);
+
+	for (int i = 0; i < minMemLen; ++i) {
+		result.pMem[i] = pMem[i] | bf.pMem[i];
 	}
 
+	if (MemLen > bf.MemLen) {
+		for (int i = minMemLen; i < resultMemLen; ++i)
+			result.pMem[i] = pMem[i];
+	}
+	else if (bf.MemLen > MemLen) {
+		for (int i = minMemLen; i < resultMemLen; ++i)
+			result.pMem[i] = bf.pMem[i];
+	}
+		
 	return result;
 }
 
@@ -158,11 +172,15 @@ TBitField TBitField::operator&(const TBitField &bf) // операция "и"
 
 	TBitField result(resultLen);
 
-	for (int i = 0; i < resultMemLen; i++) {
-		TELEM a = (i < MemLen) ? pMem[i] : 0;
-		TELEM b = (i < bf.MemLen) ? bf.pMem[i] : 0;
-		result.pMem[i] = a & b;
+	int minMemLen = min(MemLen, bf.MemLen);
+
+	for (int i = 0; i < minMemLen; ++i) {
+		result.pMem[i] = pMem[i] & bf.pMem[i];
 	}
+		
+	for (int i = minMemLen; i < resultMemLen; ++i)
+		result.pMem[i] = 0;
+
 
 	return result;
 }
