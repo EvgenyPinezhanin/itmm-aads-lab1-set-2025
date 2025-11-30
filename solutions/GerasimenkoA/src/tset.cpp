@@ -5,7 +5,12 @@
 //
 // Множество - реализация через битовые поля
 
+#include <string>
+#include <sstream>
+
 #include "tset.h"
+
+using namespace std;
 
 // Fake variables used as placeholders in tests
 static const int FAKE_INT = -1;
@@ -120,7 +125,16 @@ TSet TSet::operator~(void) // дополнение
 
 istream &operator>>(istream &istr, TSet &s) // ввод
 {
-    return istr;
+    string line;
+    if (!getline(istr, line)) return istr;
+
+    s.BitField = TBitField(s.MaxPower);
+
+    istringstream ss(line);
+    int elem;
+    while (ss >> elem) {
+        s.InsElem(elem);
+    }
 }
 
 ostream& operator<<(ostream &ostr, const TSet &s) // вывод
