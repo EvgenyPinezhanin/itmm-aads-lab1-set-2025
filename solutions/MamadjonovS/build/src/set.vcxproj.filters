@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="C:\itmm-aads-lab1-set-2025\solutions\MamadjonovS\src\BitField.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\itmm-aads-lab1-set-2025\solutions\MamadjonovS\src\Set.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="C:\itmm-aads-lab1-set-2025\solutions\MamadjonovS\include\BitField.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\itmm-aads-lab1-set-2025\solutions\MamadjonovS\include\Set.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="C:\itmm-aads-lab1-set-2025\solutions\MamadjonovS\src\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{60D7C5DD-24BD-30A2-9517-CD326E44A53D}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{77F276E3-53AF-3D10-9C7D-7220802EF635}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

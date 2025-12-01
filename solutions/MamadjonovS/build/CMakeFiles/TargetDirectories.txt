@@ -1,0 +1,5 @@
+C:/itmm-aads-lab1-set-2025/solutions/MamadjonovS/build/CMakeFiles/ALL_BUILD.dir
+C:/itmm-aads-lab1-set-2025/solutions/MamadjonovS/build/CMakeFiles/ZERO_CHECK.dir
+C:/itmm-aads-lab1-set-2025/solutions/MamadjonovS/build/src/CMakeFiles/set.dir
+C:/itmm-aads-lab1-set-2025/solutions/MamadjonovS/build/gtest/CMakeFiles/gtest.dir
+C:/itmm-aads-lab1-set-2025/solutions/MamadjonovS/build/test/CMakeFiles/test_set.dir

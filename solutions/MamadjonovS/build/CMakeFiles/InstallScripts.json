@@ -1,0 +1,10 @@
+{
+	"InstallScripts" : 
+	[
+		"C:/itmm-aads-lab1-set-2025/solutions/MamadjonovS/build/cmake_install.cmake",
+		"C:/itmm-aads-lab1-set-2025/solutions/MamadjonovS/build/src/cmake_install.cmake",
+		"C:/itmm-aads-lab1-set-2025/solutions/MamadjonovS/build/gtest/cmake_install.cmake",
+		"C:/itmm-aads-lab1-set-2025/solutions/MamadjonovS/build/test/cmake_install.cmake"
+	],
+	"Parallel" : false
+}
