@@ -9,13 +9,11 @@ static TSet FAKE_SET(1);
 TSet::TSet(int mp) : BitField(-1)
 {
     if (mp <= 0) {
-        MaxPower = 1;
-        BitField = FAKE_BITFIELD; // используем фейковое битовое поле
+        // Теперь тоже нужно бросать исключение
+        throw std::invalid_argument("Set max power must be positive");
     }
-    else {
-        MaxPower = mp;
-        BitField = TBitField(mp);
-    }
+
+    MaxPower = mp;
 }
 
 // конструктор копирования
@@ -59,21 +57,16 @@ int TSet::GetMaxPower(void) const // получить макс. к-во эл-тов
 
 int TSet::IsMember(const int Elem) const  
 {
-    if (this == &FAKE_SET || BitField == FAKE_BITFIELD) {
-        return FAKE_INT;
-    }
     if (Elem < 0 || Elem >= MaxPower) {
-        return FAKE_INT;  
+        throw std::out_of_range("Element index out of range");
     }
+
     return BitField.GetBit(Elem);
 }
 
 void TSet::InsElem(const int Elem)  
 {
     if (Elem < 0 || Elem >= MaxPower) {
-        if (this == &FAKE_SET) {
-            return;
-        }
         throw std::out_of_range("Element index out of range");
     }
 
@@ -82,15 +75,10 @@ void TSet::InsElem(const int Elem)
 
 void TSet::DelElem(const int Elem)  
 {
-    if (this == &FAKE_SET) {
-        return;  
-    }
-    if (BitField == FAKE_BITFIELD) {
-        return;  
-    }
     if (Elem < 0 || Elem >= MaxPower) {
-        return;
+        throw std::out_of_range("Element index out of range");
     }
+
     BitField.ClrBit(Elem);
 }
 

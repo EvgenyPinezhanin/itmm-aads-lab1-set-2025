@@ -7,26 +7,17 @@ static const int cBITS = sizeof(TELEM) * 8;
 TBitField::TBitField(int len)
 {
     if (len <= 0) {
-        BitLen = FAKE_BITFIELD.BitLen;
-        MemLen = FAKE_BITFIELD.MemLen;
-        pMem = new TELEM[MemLen];
-        for (int i = 0; i < MemLen; i++)
-            pMem[i] = FAKE_BITFIELD.pMem[i];
-        return;
+        // Бросаем исключение вместо создания FAKE_BITFIELD
+        throw std::invalid_argument("Bit field length must be positive");
     }
 
     BitLen = len;
     MemLen = (len + cBITS - 1) / cBITS;
 
-    try {
-        pMem = new TELEM[MemLen];
-    }
-    catch (const std::bad_alloc& e) {
-        throw; 
-    }
-
-    for (int i = 0; i < MemLen; i++)
+    pMem = new TELEM[MemLen];
+    for (int i = 0; i < MemLen; i++) {
         pMem[i] = 0;
+    }
 }
 
 
@@ -72,35 +63,41 @@ int TBitField::GetLength(void) const
 
 void TBitField::SetBit(const int n) // установить бит
 {
-    int memIndex = GetMemIndex(n);
-    if (memIndex == FAKE_INT) {
-        return; 
+    // Проверяем, что бит n находится в допустимых пределах
+    if (n < 0 || n >= BitLen) {
+        throw std::out_of_range("Bit index out of range");
     }
 
-    TELEM mask = GetMemMask(n);
+    // Вычисляем индекс элемента массива и позицию бита внутри элемента
+    int memIndex = n / cBITS;         // индекс в массиве pMem
+    int bitIndex = n % cBITS;         // позиция бита внутри TELEM
+
+    // Создаем маску и устанавливаем бит
+    TELEM mask = static_cast<TELEM>(1) << bitIndex;
     pMem[memIndex] |= mask;
 }
 
 void TBitField::ClrBit(const int n) // очистить бит
 {
     if (n < 0 || n >= BitLen) {
-        return;  
+        throw std::out_of_range("Bit index out of range");
     }
-    int memIndex = n / cBITS;         
-    int bitIndex = n % cBITS;         
-    // Создаем маску и очищаем бит
+
+    int memIndex = n / cBITS;
+    int bitIndex = n % cBITS;
     TELEM mask = static_cast<TELEM>(1) << bitIndex;
-    pMem[memIndex] &= ~mask;  
+    pMem[memIndex] &= ~mask;
 }
 
 int TBitField::GetBit(const int n) const 
 {
-    int memIndex = GetMemIndex(n);
-    if (memIndex == FAKE_INT) {
-        return FAKE_INT;  
+    if (n < 0 || n >= BitLen) {
+        throw std::out_of_range("Bit index out of range");
     }
 
-    TELEM mask = GetMemMask(n);
+    int memIndex = n / cBITS;
+    int bitIndex = n % cBITS;
+    TELEM mask = static_cast<TELEM>(1) << bitIndex;
     return (pMem[memIndex] & mask) ? 1 : 0;
 }
 
