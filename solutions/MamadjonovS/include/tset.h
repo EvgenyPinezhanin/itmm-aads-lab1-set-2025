@@ -1,3 +1,10 @@
+// ÐÐÐ“Ð£, Ð’ÐœÐš, ÐšÑƒÑ€Ñ "ÐœÐµÑ‚Ð¾Ð´Ñ‹ Ð¿Ñ€Ð¾Ð³Ñ€Ð°Ð¼Ð¼Ð¸Ñ€Ð¾Ð²Ð°Ð½Ð¸Ñ-2", Ð¡++, ÐžÐžÐŸ
+//
+// tset.h - Copyright (c) Ð“ÐµÑ€Ð³ÐµÐ»ÑŒ Ð’.ÐŸ. 07.05.2001
+//   ÐŸÐµÑ€ÐµÑ€Ð°Ð±Ð¾Ñ‚Ð°Ð½Ð¾ Ð´Ð»Ñ Microsoft Visual Studio 2008 Ð¡Ñ‹ÑÐ¾ÐµÐ²Ñ‹Ð¼ Ð.Ð’. (19.04.2015)
+//
+// ÐœÐ½Ð¾Ð¶ÐµÑÑ‚Ð²Ð¾
+
 #ifndef __SET_H__
 #define __SET_H__
 
@@ -6,33 +13,31 @@
 class TSet
 {
 private:
-    int MaxPower;       // ìàêñèìàëüíàÿ ìîùíîñòü ìíîæåñòâà
-    TBitField BitField; // áèòîâîå ïîëå äëÿ õðàíåíèÿ õàðàêòåðèñòè÷åñêîãî âåêòîðà
-  
+  int MaxPower;       // Ð¼Ð°ÐºÑÐ¸Ð¼Ð°Ð»ÑŒÐ½Ð°Ñ Ð¼Ð¾Ñ‰Ð½Ð¾ÑÑ‚ÑŒ Ð¼Ð½Ð¾Ð¶ÐµÑÑ‚Ð²Ð°
+  TBitField BitField; // Ð±Ð¸Ñ‚Ð¾Ð²Ð¾Ðµ Ð¿Ð¾Ð»Ðµ Ð´Ð»Ñ Ñ…Ñ€Ð°Ð½ÐµÐ½Ð¸Ñ Ñ…Ð°Ñ€Ð°ÐºÑ‚ÐµÑ€Ð¸ÑÑ‚Ð¸Ñ‡ÐµÑÐºÐ¾Ð³Ð¾ Ð²ÐµÐºÑ‚Ð¾Ñ€Ð°
 public:
-    TSet(int mp);
-    TSet(const TSet& s);       // êîíñòðóêòîð êîïèðîâàíèÿ
-    TSet(const TBitField& bf); // êîíñòðóêòîð ïðåîáðàçîâàíèÿ òèïà
-    operator TBitField();      // ïðåîáðàçîâàíèå òèïà ê áèòîâîìó ïîëþ
-    // äîñòóï ê áèòàì
-    int GetMaxPower(void) const;     // ìàêñèìàëüíàÿ ìîùíîñòü ìíîæåñòâà
-    void InsElem(const int Elem);       // âêëþ÷èòü ýëåìåíò â ìíîæåñòâî
-    void DelElem(const int Elem);       // óäàëèòü ýëåìåíò èç ìíîæåñòâà
-    int IsMember(const int Elem) const; // ïðîâåðèòü íàëè÷èå ýëåìåíòà â ìíîæåñòâå
-    // òåîðåòèêî-ìíîæåñòâåííûå îïåðàöèè
-    int operator== (const TSet& s) const; // ñðàâíåíèå
-    int operator!= (const TSet& s) const; // ñðàâíåíèå
-    TSet& operator=(const TSet& s);  // ïðèñâàèâàíèå
-    TSet operator+ (const int Elem); // îáúåäèíåíèå ñ ýëåìåíòîì
-    // ýëåìåíò äîëæåí áûòü èç òîãî æå óíèâåðñà
-    TSet operator- (const int Elem); // ðàçíîñòü ñ ýëåìåíòîì
-    // ýëåìåíò äîëæåí áûòü èç òîãî æå óíèâåðñà
-    TSet operator+ (const TSet& s);  // îáúåäèíåíèå
-    TSet operator* (const TSet& s);  // ïåðåñå÷åíèå
-    TSet operator~ (void);           // äîïîëíåíèå
+  TSet(int mp);
+  TSet(const TSet &s);       // ÐºÐ¾Ð½ÑÑ‚Ñ€ÑƒÐºÑ‚Ð¾Ñ€ ÐºÐ¾Ð¿Ð¸Ñ€Ð¾Ð²Ð°Ð½Ð¸Ñ
+  TSet(const TBitField &bf); // ÐºÐ¾Ð½ÑÑ‚Ñ€ÑƒÐºÑ‚Ð¾Ñ€ Ð¿Ñ€ÐµÐ¾Ð±Ñ€Ð°Ð·Ð¾Ð²Ð°Ð½Ð¸Ñ Ñ‚Ð¸Ð¿Ð°
+  operator TBitField();      // Ð¿Ñ€ÐµÐ¾Ð±Ñ€Ð°Ð·Ð¾Ð²Ð°Ð½Ð¸Ðµ Ñ‚Ð¸Ð¿Ð° Ðº Ð±Ð¸Ñ‚Ð¾Ð²Ð¾Ð¼Ñƒ Ð¿Ð¾Ð»ÑŽ
+  // Ð´Ð¾ÑÑ‚ÑƒÐ¿ Ðº Ð±Ð¸Ñ‚Ð°Ð¼
+  int GetMaxPower(void) const;     // Ð¼Ð°ÐºÑÐ¸Ð¼Ð°Ð»ÑŒÐ½Ð°Ñ Ð¼Ð¾Ñ‰Ð½Ð¾ÑÑ‚ÑŒ Ð¼Ð½Ð¾Ð¶ÐµÑÑ‚Ð²Ð°
+  void InsElem(const int Elem);       // Ð²ÐºÐ»ÑŽÑ‡Ð¸Ñ‚ÑŒ ÑÐ»ÐµÐ¼ÐµÐ½Ñ‚ Ð² Ð¼Ð½Ð¾Ð¶ÐµÑÑ‚Ð²Ð¾
+  void DelElem(const int Elem);       // ÑƒÐ´Ð°Ð»Ð¸Ñ‚ÑŒ ÑÐ»ÐµÐ¼ÐµÐ½Ñ‚ Ð¸Ð· Ð¼Ð½Ð¾Ð¶ÐµÑÑ‚Ð²Ð°
+  int IsMember(const int Elem) const; // Ð¿Ñ€Ð¾Ð²ÐµÑ€Ð¸Ñ‚ÑŒ Ð½Ð°Ð»Ð¸Ñ‡Ð¸Ðµ ÑÐ»ÐµÐ¼ÐµÐ½Ñ‚Ð° Ð² Ð¼Ð½Ð¾Ð¶ÐµÑÑ‚Ð²Ðµ
+  // Ñ‚ÐµÐ¾Ñ€ÐµÑ‚Ð¸ÐºÐ¾-Ð¼Ð½Ð¾Ð¶ÐµÑÑ‚Ð²ÐµÐ½Ð½Ñ‹Ðµ Ð¾Ð¿ÐµÑ€Ð°Ñ†Ð¸Ð¸
+  int operator== (const TSet &s) const; // ÑÑ€Ð°Ð²Ð½ÐµÐ½Ð¸Ðµ
+  int operator!= (const TSet &s) const; // ÑÑ€Ð°Ð²Ð½ÐµÐ½Ð¸Ðµ
+  TSet& operator=(const TSet &s);  // Ð¿Ñ€Ð¸ÑÐ²Ð°Ð¸Ð²Ð°Ð½Ð¸Ðµ
+  TSet operator+ (const int Elem); // Ð¾Ð±ÑŠÐµÐ´Ð¸Ð½ÐµÐ½Ð¸Ðµ Ñ ÑÐ»ÐµÐ¼ÐµÐ½Ñ‚Ð¾Ð¼
+                                   // ÑÐ»ÐµÐ¼ÐµÐ½Ñ‚ Ð´Ð¾Ð»Ð¶ÐµÐ½ Ð±Ñ‹Ñ‚ÑŒ Ð¸Ð· Ñ‚Ð¾Ð³Ð¾ Ð¶Ðµ ÑƒÐ½Ð¸Ð²ÐµÑ€ÑÐ°
+  TSet operator- (const int Elem); // Ñ€Ð°Ð·Ð½Ð¾ÑÑ‚ÑŒ Ñ ÑÐ»ÐµÐ¼ÐµÐ½Ñ‚Ð¾Ð¼
+                                   // ÑÐ»ÐµÐ¼ÐµÐ½Ñ‚ Ð´Ð¾Ð»Ð¶ÐµÐ½ Ð±Ñ‹Ñ‚ÑŒ Ð¸Ð· Ñ‚Ð¾Ð³Ð¾ Ð¶Ðµ ÑƒÐ½Ð¸Ð²ÐµÑ€ÑÐ°
+  TSet operator+ (const TSet &s);  // Ð¾Ð±ÑŠÐµÐ´Ð¸Ð½ÐµÐ½Ð¸Ðµ
+  TSet operator* (const TSet &s);  // Ð¿ÐµÑ€ÐµÑÐµÑ‡ÐµÐ½Ð¸Ðµ
+  TSet operator~ (void);           // Ð´Ð¾Ð¿Ð¾Ð»Ð½ÐµÐ½Ð¸Ðµ
 
-    friend istream& operator>>(istream& istr, TSet& bf);
-    friend ostream& operator<<(ostream& ostr, const TSet& bf);
+  friend istream &operator>>(istream &istr, TSet &bf);
+  friend ostream &operator<<(ostream &ostr, const TSet &bf);
 };
-
 #endif
